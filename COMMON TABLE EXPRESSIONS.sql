@@ -1,0 +1,14 @@
+/* CTEs COMMON TABLE EXPRESSION 
+NAMED TEMPORARY EXPRESSION AND A NAMED TEMPOERY RESULT SET WHICH IS USED TO MANIPULATE THE COMPLEX SUBQUERIES DATA
+ONCE WE CANCEL OUT OF THE DATA ITS LIKE IT NEVER EXISTED*/
+
+WITH CTE_Employee as
+(SELECT FirstName, LastName, Gender, Salary, COUNT(Gender) OVER (PARTITION BY Gender) TotalGender,
+AVG(Salary) OVER (PARTITION BY Gender) AvgSalary
+FROM SQLTutorial..EmployeeDemographics emp /*.. not .dbo.*/
+JOIN SQLTutorial..EmployeeSalary sal
+	ON emp.EmployeeID = sal.EmployeeID
+WHERE Salary> '45000 '
+) /*SELECT HAS TO BE IMMEDIATELY AFTER*/
+SELECT FirstName, AvgSalary
+FROM CTE_Employee
